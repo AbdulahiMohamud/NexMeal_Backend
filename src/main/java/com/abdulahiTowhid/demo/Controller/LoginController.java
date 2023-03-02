@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
-    @Autowired
+    @Autowiredgit
     private UserRepo userRepository;
 
     @PostMapping("/login")
