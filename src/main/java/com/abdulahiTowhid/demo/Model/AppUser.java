@@ -3,7 +3,7 @@ package com.abdulahiTowhid.demo.Model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 
 import javax.crypto.SecretKey;
 import javax.sql.DataSource;
@@ -45,9 +45,6 @@ public class AppUser {
         this.password = password;
     }
 
-    public static <T extends DataSource> User.UserBuilder builder() {
-        return null;
-    }
 
     public void addRoles (Role role) {
         this.roles.add(role);
