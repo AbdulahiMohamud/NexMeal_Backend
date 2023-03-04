@@ -36,7 +36,7 @@ public class LoginController {
                 return new ResponseEntity<>("Wrong password, please try again",HttpStatus.UNAUTHORIZED);
 
             }
-            return new ResponseEntity<>("User Found ,log in. Welcome back " + existingUser.getFirstName(), HttpStatus.OK);
+            return new ResponseEntity<>("User Found. Welcome back " + existingUser.getFirstName(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Unexpected Error, please try again",HttpStatus.INTERNAL_SERVER_ERROR);
