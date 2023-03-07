@@ -22,6 +22,9 @@ public class TawhidWebsiteApplication {
 
 	}
 
+	// test to see if am able to get data from the api
+	// works need to change code around
+
 	public static void TestApi() throws IOException {
 		SpoonacularApiClient client = new SpoonacularApiClient();
 		List<Recipe> recipes = client.searchRecipes("chicken");
