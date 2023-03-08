@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class SpoonacularApiClient {
     @Value("${spoonacular.api.key}")
-    private static String API_KEY;
+    private String API_KEY;
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
 
 
