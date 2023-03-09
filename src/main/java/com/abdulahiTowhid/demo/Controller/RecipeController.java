@@ -18,7 +18,9 @@ public class RecipeController {
     private SpoonacularApiClient apiClient;
 
     @GetMapping("/recipes/search")
-    public List<Recipe> searchRecipes(@RequestParam String query) throws IOException {
-        return apiClient.searchRecipes(query);
+    public List<Recipe> searchRecipes(@RequestParam(value = "query", defaultValue = "pasta") String query,
+                                      @RequestParam(value = "excludeIngredients", defaultValue = "pork,gelatin") String excludeIngredients
+                                      ) throws IOException {
+        return apiClient.searchRecipes(query,excludeIngredients);
     }
 }
