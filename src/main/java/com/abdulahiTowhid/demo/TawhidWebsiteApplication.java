@@ -27,9 +27,9 @@ public class TawhidWebsiteApplication {
 
 	public static void TestApi() throws IOException {
 		SpoonacularApiClient client = new SpoonacularApiClient();
-		List<Recipe> recipes = client.searchRecipes("chicken");
+		List<Recipe> recipes = client.searchRecipes("chicken","fish");
 		for (Recipe recipe : recipes) {
-			System.out.println(recipe.getTitle());
+//			System.out.println(recipe.getAnalyzedInstructions());
 		}
 	}
 
