@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-@PropertySource("classpath:application.properties")
 public class SpoonacularApiClient {
-    @Value("${spoonacular.api.key}")
-    private String API_KEY;
+
+
+    private final String API_KEY = "85ff34c22c7746b18dd54157e0592f26";
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
 
 

@@ -1,15 +1,14 @@
 package com.abdulahiTowhid.demo.Controller;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
-    private String message;
-
-
-
+public class AuthenticationResponce {
+    private String token;
 }

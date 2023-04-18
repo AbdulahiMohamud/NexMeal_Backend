@@ -1,23 +1,27 @@
 package com.abdulahiTowhid.demo.Model;
 
+import com.abdulahiTowhid.demo.APIS.Recipe;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.User;
 
 import javax.crypto.SecretKey;
 import javax.sql.DataSource;
 import java.security.KeyStore;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "Users_Data")
 
-public class AppUser {
+public class AppUser implements UserDetails {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,33 +31,49 @@ public class AppUser {
     private String lastName;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavedRecipes> savedRecipes;
 
 
-    public AppUser(String userName, String firstName, String lastName, String email, String password) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(roles.name())) ;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-    public void addRoles (Role role) {
-        this.roles.add(role);
-        role.getUsers().add(this);
+    @Override
+    public String getUsername() {
+        return email;
 
     }
-    public void removeRoles (Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
 
