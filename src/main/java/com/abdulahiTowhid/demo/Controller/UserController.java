@@ -1,22 +1,18 @@
 package com.abdulahiTowhid.demo.Controller;
 
 
+
 import com.abdulahiTowhid.demo.Model.AppUser;
 import com.abdulahiTowhid.demo.Repository.UserRepo;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
@@ -25,36 +21,53 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    private HttpServletRequest httpServletRequest;
+    private AuthenticationService authenticationService;
+
+
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody AppUser user) {
-
-        // Check if the user already exists using email
-        AppUser existingUser = userRepository.findByEmail(user.getEmail());
-        AppUser existingUserByUsername = userRepository.findByUserName(user.getUserName());
-        if (existingUser != null ) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("User with email " + user.getEmail() +
-                    " already exists"));
-        } else if (existingUserByUsername != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Username " + user.getUserName() +
-                    " was taken, please create a new one."));
-
+    public ResponseEntity<?> signup(@RequestBody SignupUser user){
+        var existingUserByEmail = userRepository.findByEmail(user.getEmail());
+        if (existingUserByEmail != null) {
+            return new ResponseEntity<>("Email " + user.getEmail() +" already exists", HttpStatus.CONFLICT);
+        }
+        var existingUserByUsername = userRepository.findByUserName(user.getUserName());
+        if (existingUserByUsername != null) {
+            return new ResponseEntity<>("Username " + user.getUserName() + " already exists",HttpStatus.CONFLICT);
         }
 
-        // Create a new user
-        AppUser newUser = new AppUser();
-        String hashedPw = passwordEncoder.encode(user.getPassword());
-        newUser.setUserName(user.getUserName());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(hashedPw);
+        return ResponseEntity.ok(authenticationService.signup(user));
 
-        userRepository.save(newUser);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticateUser user){
+
+
+        try{
+            AppUser existingUser = userRepository.findByEmail(user.getEmail());
+
+
+
+            if (existingUser == null){
+                return new ResponseEntity<>("Wrong Email or password, please sign up or try again",HttpStatus.UNAUTHORIZED);
+            } if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())
+            ) {
+                return new ResponseEntity<>("Wrong password, please try again",HttpStatus.UNAUTHORIZED);
+
+            }
+            AuthenticationResponce authResponse = authenticationService.authenticate(user);
+            return ResponseEntity.ok(new Object[]{authResponse,existingUser});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unexpected Error, please try again",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+
+    }
+
+
 
 
     }
