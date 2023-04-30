@@ -8,6 +8,15 @@ group = 'com.abdulahiTowhid'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+compileJava.options.release = 17
+compileTestJava.options.release = 17
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+	sourceCompatibility = "17"
+	targetCompatibility = "17"
+}
+
 repositories {
 	mavenCentral()
 }
@@ -42,14 +51,11 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.26'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-bootRun {
-	def appProperties = new Properties()
-	appProperties.load(new FileInputStream(rootProject.file("src/main/resources/application.properties")))
-	environment(['spoonacular.api.key': appProperties.getProperty('spoonacular.api.key')])
-}
+

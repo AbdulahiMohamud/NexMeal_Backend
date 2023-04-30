@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(String.valueOf(PathRequest.toStaticResources().atCommonLocations())).permitAll()
-                .requestMatchers("/**")
+                .requestMatchers("/api/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

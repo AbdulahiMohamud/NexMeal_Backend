@@ -4,6 +4,7 @@ import com.abdulahiTowhid.demo.APIS.Recipe;
 import com.abdulahiTowhid.demo.APIS.SpoonacularApiClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SpringBootApplication
+@EnableConfigurationProperties(SpoonacularApiClient.class)
 public class TawhidWebsiteApplication {
 
 	public static void main(String[] args) throws IOException {
