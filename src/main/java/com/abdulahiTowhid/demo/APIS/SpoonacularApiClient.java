@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import lombok.Data;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,12 @@ import javax.naming.directory.SearchResult;
 import java.io.IOException;
 import java.util.List;
 
-@Component
+
+@ConfigurationProperties("key")
 public class SpoonacularApiClient {
 
 
-    private final String API_KEY = "85ff34c22c7746b18dd54157e0592f26";
+    private final String API_KEY ="85ff34c22c7746b18dd54157e0592f26";
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
 
 
