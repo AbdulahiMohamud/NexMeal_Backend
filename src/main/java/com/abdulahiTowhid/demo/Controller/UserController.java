@@ -11,6 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -67,9 +72,48 @@ public class UserController {
 
     }
 
+    @PostMapping("follow/{userID}")
+    public ResponseEntity<?> followUser(@RequestBody AuthenticateUser user , @PathVariable Long userID ) {
+        Optional<AppUser> publicOptional = userRepository.findById(userID);
+        AppUser currentUser = userRepository.findByEmail(user.getEmail());
+
+        AppUser publicUser = publicOptional.get();
+
+        if (publicUser == null || currentUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (publicUser.equals(currentUser)) {
+            return ResponseEntity.badRequest().body("You can't follow yourself.");
+        }
+
+        Set<AppUser> following = currentUser.getFollowing();
+        if (following.contains(publicUser)) {
+            return ResponseEntity.badRequest().body("You are already following " + publicUser.getUsername() + ".");
+        }
+
+        currentUser.getFollowing().add(publicUser);
+
+
+        userRepository.save(currentUser);
 
 
 
+        return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/feed")
+    public List<AppUser> feed(){
+        return userRepository.findAll();
+    }
+
+
+
+
+
+
+
+
+}
 
 

@@ -38,6 +38,17 @@ public class AppUser implements UserDetails {
     private List<SavedRecipes> savedRecipes;
 
 
+    @ManyToMany(mappedBy = "following")
+    private Set<AppUser> followers;
+
+    @ManyToMany
+    @JoinTable(
+            name = "followings",
+            joinColumns = {@JoinColumn(name = "follower")},
+            inverseJoinColumns = {@JoinColumn(name = "following")}
+    )
+    private Set<AppUser> following;
+
 
 
     @Override
@@ -75,6 +86,8 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
 
 
