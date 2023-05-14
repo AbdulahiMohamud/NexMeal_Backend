@@ -1,7 +1,9 @@
 package com.abdulahiTowhid.demo;
 
+import com.abdulahiTowhid.demo.APIS.GetMethods;
 import com.abdulahiTowhid.demo.APIS.Recipe;
 import com.abdulahiTowhid.demo.APIS.SpoonacularApiClient;
+//import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,12 +30,12 @@ public class TawhidWebsiteApplication {
 	// test to see if am able to get data from the api
 	// works need to change code around
 
-	public static void TestApi() throws IOException {
-		SpoonacularApiClient client = new SpoonacularApiClient();
-		List<Recipe> recipes = client.searchRecipes("chicken","fish");
-		for (Recipe recipe : recipes) {
-//			System.out.println(recipe.getAnalyzedInstructions());
-		}
+	public static void TestApi() {
+
+
+
+
+
 	}
 
 
