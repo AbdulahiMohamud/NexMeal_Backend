@@ -92,10 +92,13 @@ public class UserController {
             return ResponseEntity.badRequest().body("You are already following " + publicUser.getUsername() + ".");
         }
 
+//        currentUser.getFollowing().add(publicUser);
         currentUser.getFollowing().add(publicUser);
+        publicUser.getFollowers().add(currentUser);
 
 
         userRepository.save(currentUser);
+        userRepository.save(publicUser);
 
 
 
