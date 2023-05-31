@@ -1,6 +1,7 @@
 package com.abdulahiTowhid.demo.Model;
 
 import com.abdulahiTowhid.demo.APIS.Recipe;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -39,6 +40,7 @@ public class AppUser implements UserDetails {
 
 
     @ManyToMany(mappedBy = "following")
+    @JsonIgnore
     private Set<AppUser> followers;
 
     @ManyToMany
@@ -88,6 +90,18 @@ public class AppUser implements UserDetails {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return Objects.equals(id, appUser.id) && Objects.equals(userName, appUser.userName) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(password, appUser.password) && roles == appUser.roles && Objects.equals(savedRecipes, appUser.savedRecipes) && Objects.equals(followers, appUser.followers) && Objects.equals(following, appUser.following);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, firstName, lastName, email, password, roles, savedRecipes);
+    }
 }
 
 
