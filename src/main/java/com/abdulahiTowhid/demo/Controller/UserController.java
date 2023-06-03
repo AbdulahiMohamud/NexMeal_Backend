@@ -73,15 +73,15 @@ public class UserController {
     }
 
     @PostMapping("follow/{userID}")
-    public ResponseEntity<?> followUser(@RequestBody AuthenticateUser user , @PathVariable Long userID ) {
+    public ResponseEntity<?> followUser(@PathVariable Long userID, @RequestBody AuthenticateUser user) {
         Optional<AppUser> publicOptional = userRepository.findById(userID);
         AppUser currentUser = userRepository.findByEmail(user.getEmail());
 
-        AppUser publicUser = publicOptional.get();
-
-        if (publicUser == null || currentUser == null) {
+        if (!publicOptional.isPresent() || currentUser == null) {
             return ResponseEntity.notFound().build();
         }
+
+        AppUser publicUser = publicOptional.get();
 
         if (publicUser.equals(currentUser)) {
             return ResponseEntity.badRequest().body("You can't follow yourself.");
@@ -92,15 +92,11 @@ public class UserController {
             return ResponseEntity.badRequest().body("You are already following " + publicUser.getUsername() + ".");
         }
 
-//        currentUser.getFollowing().add(publicUser);
-        currentUser.getFollowing().add(publicUser);
-        publicUser.getFollowers().add(currentUser);
-
+        following.add(publicUser);
+        currentUser.setFollowing(following);
 
         userRepository.save(currentUser);
         userRepository.save(publicUser);
-
-
 
         return ResponseEntity.ok().build();
     }
